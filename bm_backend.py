@@ -4,9 +4,23 @@ from fastapi import FastAPI
 mydb = pymongo.MongoClient('mongodb+srv://user:user@beachme.c5sbvhv.mongodb.net/?retryWrites=true&w=majority')["beachme-1"]
 # Fetching "Shores"
 shore_db = mydb.shores
+from fastapi.middleware.cors import CORSMiddleware
 # Creating api
 app = FastAPI()
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:8080",
+]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # Get all shores on db
 @app.get("/get_all_shores")
 async def root():
