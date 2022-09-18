@@ -19,7 +19,7 @@ app.add_middleware(
 # Get all shores on db
 @app.get("/get_all_shores")
 async def root():
-    shores = list(shore_db.aggregate({ "$sample": { "size": 1 } }))
+    shores = list(shore_db.find({}))
     for shore in shores:
         del shore['_id']
     return shores
