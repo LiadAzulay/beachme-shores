@@ -33,6 +33,6 @@ async def root():
 @app.get("/get_specific_shore/{id}")
 async def root(id):
     # Converting from pymongo Cursor to list, then to object
-    shore = list(shore_db.find({"id": int(id)}))[0]
+    shore = list(shore_db.find({"shore_id": int(id)}))[0]
     del shore['_id']
     return shore
