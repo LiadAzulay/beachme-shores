@@ -1,10 +1,10 @@
 import pymongo
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 # Connecting to DB 
 mydb = pymongo.MongoClient('mongodb+srv://user:user@beachme.c5sbvhv.mongodb.net/?retryWrites=true&w=majority')["beachme-1"]
 # Fetching "Shores"
 shore_db = mydb.shores
-from fastapi.middleware.cors import CORSMiddleware
 # Creating api
 app = FastAPI()
 
@@ -19,7 +19,7 @@ app.add_middleware(
 # Get all shores on db
 @app.get("/get_all_shores")
 async def root():
-    shores = list(shore_db.find({}))
+    shores = list(shore_db.aggregate({ "$sample": { "size": 1 } }))
     for shore in shores:
         del shore['_id']
     return shores
